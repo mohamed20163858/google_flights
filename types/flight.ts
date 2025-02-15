@@ -7,4 +7,6 @@ export interface Suggestion {
 }
 export interface placeholderProps {
   placeholder: string;
+  defaultSuggestion?: Suggestion;
+  debounceTime?: number;
 }

@@ -1,12 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
 import CityAutocompleteTextInput from "./CityAutocompleteTextInput";
+import { Suggestion } from "@/types/flight";
+
 function SearchForm() {
-  const [origin, setOrigin] = useState({ originSkyId: "", originEntityId: "" });
-  //   const [mounted, setMounted] = useState(false);
+  const [origin, setOrigin] = useState<Suggestion>({
+    entityId: "",
+    skyId: "",
+    flightPlaceType: "",
+    localizedName: "",
+    country: "",
+  });
 
   useEffect(() => {
-    // setMounted(true);
     navigator.geolocation.getCurrentPosition(
       function (position) {
         const lat = position.coords.latitude;
@@ -22,10 +28,13 @@ function SearchForm() {
         )
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
+            // console.log(data);
             setOrigin({
-              originSkyId: data?.data?.current?.skyId,
-              originEntityId: data?.data?.current?.entityId,
+              skyId: data?.data?.current?.skyId,
+              entityId: data?.data?.current?.entityId,
+              flightPlaceType: data?.data?.current?.navigation?.entityType,
+              localizedName: data?.data?.current?.navigation?.localizedName,
+              country: data?.data?.current?.presentation?.subtitle,
             });
           });
       },
@@ -34,18 +43,14 @@ function SearchForm() {
       }
     );
   }, []);
-  //   if (!mounted) {
-  //     return null; // Don't render until the component has mounted on the client.
-  //   }
 
-  if (!origin.originEntityId || !origin.originSkyId) {
-    return <div>Loading...</div>;
-  }
   return (
     <div>
-      <h1>entityID: {origin.originEntityId}</h1>
-      <h1>skyId: {origin.originSkyId}</h1>
-      <CityAutocompleteTextInput placeholder="Where from ?" />
+      <CityAutocompleteTextInput
+        placeholder="Where from ?"
+        defaultSuggestion={origin}
+      />
+      <CityAutocompleteTextInput placeholder="Where to ?" />
     </div>
   );
 }

@@ -1,10 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { placeholderProps } from "@/types/flight";
 import { Suggestion } from "@/types/flight";
-function CityAutocompleteTextInput({ placeholder }: placeholderProps) {
-  const [inputValue, setInputValue] = useState("");
+function CityAutocompleteTextInput({
+  placeholder,
+  defaultSuggestion,
+}: placeholderProps) {
+  const [inputValue, setInputValue] = useState(
+    defaultSuggestion?.entityId
+      ? `${defaultSuggestion?.localizedName}, ${defaultSuggestion?.country}`
+      : ""
+  );
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  useEffect(() => {
+    if (defaultSuggestion?.entityId) {
+      setInputValue(
+        `${defaultSuggestion.localizedName}, ${defaultSuggestion.country}`
+      );
+    }
+  }, [defaultSuggestion]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -48,6 +62,7 @@ function CityAutocompleteTextInput({ placeholder }: placeholderProps) {
     <div>
       <input
         type="text"
+        name="city"
         placeholder={placeholder}
         value={inputValue}
         onChange={handleInputChange}
