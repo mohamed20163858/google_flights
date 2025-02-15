@@ -1,24 +1,23 @@
 "use client";
 import { useState, useEffect } from "react";
-import { placeholderProps } from "@/types/flight";
-import { Suggestion } from "@/types/flight";
+import { CityAutoCompleteTextInputProps, Flight } from "@/types/flight";
+
 function CityAutocompleteTextInput({
   placeholder,
-  defaultSuggestion,
-}: placeholderProps) {
+  suggestion,
+  setSuggestion,
+}: CityAutoCompleteTextInputProps) {
   const [inputValue, setInputValue] = useState(
-    defaultSuggestion?.entityId
-      ? `${defaultSuggestion?.localizedName}, ${defaultSuggestion?.country}`
+    suggestion?.entityId
+      ? `${suggestion.localizedName}, ${suggestion.country}`
       : ""
   );
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [suggestions, setSuggestions] = useState<Flight[]>([]);
   useEffect(() => {
-    if (defaultSuggestion?.entityId) {
-      setInputValue(
-        `${defaultSuggestion.localizedName}, ${defaultSuggestion.country}`
-      );
+    if (suggestion.entityId) {
+      setInputValue(`${suggestion.localizedName}, ${suggestion.country}`);
     }
-  }, [defaultSuggestion]);
+  }, [suggestion]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -40,42 +39,51 @@ function CityAutocompleteTextInput({
       }
     );
     const data = await response.json();
-    // console.log(data.data);
     setSuggestions(
       data.data
         .map(
           (entity: {
-            navigation: { relevantFlightParams: Suggestion };
+            navigation: { relevantFlightParams: Flight };
             presentation: { subtitle: string };
-          }) => {
-            return {
-              ...entity.navigation.relevantFlightParams,
-              country: entity.presentation.subtitle,
-            };
-          }
+          }) => ({
+            ...entity.navigation.relevantFlightParams,
+            country: entity.presentation.subtitle,
+          })
         )
-        .filter((entity: Suggestion) => entity.flightPlaceType === "AIRPORT")
+        .filter((entity: Flight) => entity.flightPlaceType === "AIRPORT")
     );
   };
 
+  const handleSuggestionClick = (suggestion: Flight) => {
+    const newValue = `${suggestion.localizedName}, ${suggestion.country}`;
+    setInputValue(newValue);
+    setSuggestion({ ...suggestion });
+    setSuggestions([]); // hide suggestions after selection
+  };
+
   return (
-    <div>
+    <div className="relative max-w-[282px] max-h-[56px]">
       <input
         type="text"
         name="city"
         placeholder={placeholder}
         value={inputValue}
         onChange={handleInputChange}
+        className="p-2 border rounded w-full"
       />
-      <ul>
-        {suggestions.length > 0 &&
-          inputValue &&
-          suggestions.map((item) => (
-            <li key={item.entityId}>
+      {suggestions.length > 0 && inputValue && (
+        <ul className="absolute left-0 right-0 top-full bg-white z-50 shadow-lg max-h-60 overflow-y-auto">
+          {suggestions.map((item) => (
+            <li
+              key={item.entityId}
+              onClick={() => handleSuggestionClick(item)}
+              className="p-2 hover:bg-gray-200 cursor-pointer"
+            >
               {item.localizedName}, {item.country}
             </li>
           ))}
-      </ul>
+        </ul>
+      )}
     </div>
   );
 }

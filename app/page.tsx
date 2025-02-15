@@ -1,11 +1,11 @@
-import SearchForm from "@/components/SearchForm";
+import Home from "@/components/Home";
 
-function Home() {
+function Page() {
   return (
     <div>
-      <SearchForm />
+      <Home />
     </div>
   );
 }
 
-export default Home;
+export default Page;

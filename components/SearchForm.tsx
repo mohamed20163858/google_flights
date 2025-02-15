@@ -1,17 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import CityAutocompleteTextInput from "./CityAutocompleteTextInput";
-import { Suggestion } from "@/types/flight";
+import { SearchFormProps } from "@/types/flight";
 
-function SearchForm() {
-  const [origin, setOrigin] = useState<Suggestion>({
-    entityId: "",
-    skyId: "",
-    flightPlaceType: "",
-    localizedName: "",
-    country: "",
-  });
-
+function SearchForm({
+  origin,
+  destination,
+  setOrigin,
+  setDestination,
+}: SearchFormProps) {
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function (position) {
@@ -42,15 +39,21 @@ function SearchForm() {
         console.log("Error getting location:", error?.message);
       }
     );
-  }, []);
+  }, [setOrigin]);
 
   return (
     <div>
       <CityAutocompleteTextInput
         placeholder="Where from ?"
-        defaultSuggestion={origin}
+        suggestion={origin}
+        setSuggestion={setOrigin}
+        // defaultSuggestion={origin}
       />
-      <CityAutocompleteTextInput placeholder="Where to ?" />
+      <CityAutocompleteTextInput
+        placeholder="Where to ?"
+        suggestion={destination}
+        setSuggestion={setDestination}
+      />
     </div>
   );
 }
