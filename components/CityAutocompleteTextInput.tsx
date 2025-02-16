@@ -9,13 +9,15 @@ function CityAutocompleteTextInput({
 }: CityAutoCompleteTextInputProps) {
   const [inputValue, setInputValue] = useState(
     suggestion?.entityId
-      ? `${suggestion.localizedName}, ${suggestion.country}`
+      ? `${suggestion.localizedName.split(" ")[0]} ${suggestion.skyId}`
       : ""
   );
   const [suggestions, setSuggestions] = useState<Flight[]>([]);
   useEffect(() => {
     if (suggestion.entityId) {
-      setInputValue(`${suggestion.localizedName}, ${suggestion.country}`);
+      setInputValue(
+        `${suggestion.localizedName.split(" ")[0]} ${suggestion.skyId}`
+      );
     }
   }, [suggestion]);
 
@@ -30,7 +32,7 @@ function CityAutocompleteTextInput({
     const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_BACKEND_URL
-      }/flights/searchAirport?query=${encodeURIComponent(value)}`,
+      }/v1/flights/searchAirport?query=${encodeURIComponent(value)}`,
       {
         method: "GET",
         headers: {

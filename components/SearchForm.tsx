@@ -1,21 +1,24 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CityAutocompleteTextInput from "./CityAutocompleteTextInput";
 import { SearchFormProps } from "@/types/flight";
-
+import Date from "./Date";
 function SearchForm({
   origin,
   destination,
   setOrigin,
   setDestination,
 }: SearchFormProps) {
+  const [departureDate, setDepartureDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function (position) {
         const lat = position.coords.latitude;
         const long = position.coords.longitude;
         fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/flights/getNearByAirports?lat=${lat}&lng=${long}&locale=en-US`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/flights/getNearByAirports?lat=${lat}&lng=${long}&locale=en-US`,
           {
             method: "GET",
             headers: {
@@ -40,21 +43,41 @@ function SearchForm({
       }
     );
   }, [setOrigin]);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/v2/flights/searchFlights?originSkyId=${origin.skyId}&destinationSkyId=${destination.skyId}&originEntityId=${origin.entityId}&destinationEntityId=${destination.entityId}&date=${departureDate}`,
+      {
+        method: "GET",
+        headers: {
+          "x-rapidapi-key": process.env.NEXT_PUBLIC_API_VALUE as string,
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+  };
 
   return (
-    <div>
+    <form
+      className="flex justify-center items-center gap-4"
+      onSubmit={handleSubmit}
+    >
       <CityAutocompleteTextInput
         placeholder="Where from ?"
         suggestion={origin}
         setSuggestion={setOrigin}
-        // defaultSuggestion={origin}
       />
       <CityAutocompleteTextInput
         placeholder="Where to ?"
         suggestion={destination}
         setSuggestion={setDestination}
       />
-    </div>
+      <Date date={departureDate} setDate={setDepartureDate} />
+      <Date date={returnDate} setDate={setReturnDate} />
+      <button type="submit">Search</button>
+    </form>
   );
 }
 

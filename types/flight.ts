@@ -20,3 +20,7 @@ export interface ResultsProps {
   origin: Flight;
   destination: Flight;
 }
+export interface DateProps {
+  date: string;
+  setDate: (date: string) => void;
+}

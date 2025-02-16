@@ -19,7 +19,7 @@ function Home() {
     country: "",
   });
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <SearchForm
         origin={origin}
         setOrigin={setOrigin}
