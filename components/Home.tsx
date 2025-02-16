@@ -1,7 +1,7 @@
 "use client";
 import Results from "./Results";
 import SearchForm from "./SearchForm";
-import { Flight } from "@/types/flight";
+import { Flight, FlightInfo } from "@/types/flight";
 import { useState } from "react";
 function Home() {
   const [origin, setOrigin] = useState<Flight>({
@@ -18,6 +18,8 @@ function Home() {
     localizedName: "",
     country: "",
   });
+  const [flightInfos, setFlightInfos] = useState<FlightInfo[]>([]);
+
   return (
     <div className="flex flex-col justify-center items-center">
       <SearchForm
@@ -25,8 +27,14 @@ function Home() {
         setOrigin={setOrigin}
         destination={destination}
         setDestination={setDestination}
+        setFlightInfos={setFlightInfos}
+        flightInfos={flightInfos}
       />
-      <Results origin={origin} destination={destination} />
+      <Results
+        origin={origin}
+        destination={destination}
+        flightInfos={flightInfos}
+      />
     </div>
   );
 }

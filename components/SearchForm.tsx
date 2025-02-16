@@ -1,13 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import CityAutocompleteTextInput from "./CityAutocompleteTextInput";
-import { SearchFormProps } from "@/types/flight";
+import { SearchFormProps, FlightInfo } from "@/types/flight";
 import Date from "./Date";
+
 function SearchForm({
   origin,
   destination,
   setOrigin,
   setDestination,
+  setFlightInfos,
 }: SearchFormProps) {
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -56,7 +58,30 @@ function SearchForm({
       }
     );
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
+    const newData = await data?.data?.itineraries
+      ?.map((entity: { legs: FlightInfo[] }) => entity.legs[0])
+      .map((entity: FlightInfo) => {
+        return {
+          id: entity.id,
+          departure: entity.departure,
+          arrival: entity.arrival,
+          durationInMinutes: entity.durationInMinutes,
+          segments: entity.segments.map((segment) => {
+            return {
+              departure: segment.departure,
+              arrival: segment.arrival,
+              durationInMinutes: segment.durationInMinutes,
+              flightNumber: segment.flightNumber,
+              marketingCarrier: segment.marketingCarrier,
+            };
+          }),
+          stopCount: entity.stopCount,
+          timeDeltaInDays: entity.timeDeltaInDays,
+        };
+      });
+    console.log(newData);
+    setFlightInfos(newData);
   };
 
   return (
