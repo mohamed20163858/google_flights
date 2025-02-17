@@ -27,14 +27,27 @@ export interface DateProps {
   date: string;
   setDate: (date: string) => void;
 }
+export interface AirportInfo {
+  flightPlaceId: string;
+  name: string;
+  type: string;
+  country: string;
+}
 export interface Segment {
   departure: string;
   arrival: string;
   durationInMinutes: number;
   flightNumber: string;
+  origin: AirportInfo;
+  destination: AirportInfo;
   marketingCarrier: { name: string };
 }
-
+export interface logo {
+  logoUrl: string;
+}
+export interface carriersProps {
+  marketing: logo[];
+}
 export interface FlightInfo {
   id: string;
   departure: string;
@@ -43,4 +56,7 @@ export interface FlightInfo {
   segments: Segment[];
   stopCount: number;
   timeDeltaInDays: number;
+  logosURL: string[];
+  carriers: carriersProps;
+  price: string;
 }

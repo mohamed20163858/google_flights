@@ -58,9 +58,11 @@ function SearchForm({
       }
     );
     const data = await response.json();
-    // console.log(data);
+    console.log(data);
     const newData = await data?.data?.itineraries
-      ?.map((entity: { legs: FlightInfo[] }) => entity.legs[0])
+      ?.map((entity: { legs: FlightInfo[]; price: { formatted: string } }) => {
+        return { ...entity.legs[0], price: entity.price.formatted };
+      })
       .map((entity: FlightInfo) => {
         return {
           id: entity.id,
@@ -74,10 +76,14 @@ function SearchForm({
               durationInMinutes: segment.durationInMinutes,
               flightNumber: segment.flightNumber,
               marketingCarrier: segment.marketingCarrier,
+              origin: segment.origin,
+              destination: segment.destination,
             };
           }),
           stopCount: entity.stopCount,
           timeDeltaInDays: entity.timeDeltaInDays,
+          logosURL: entity.carriers.marketing.map((ele) => ele.logoUrl),
+          price: entity.price,
         };
       });
     console.log(newData);
