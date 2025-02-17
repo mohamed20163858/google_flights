@@ -60,9 +60,19 @@ function SearchForm({
     const data = await response.json();
     console.log(data);
     const newData = await data?.data?.itineraries
-      ?.map((entity: { legs: FlightInfo[]; price: { formatted: string } }) => {
-        return { ...entity.legs[0], price: entity.price.formatted };
-      })
+      ?.map(
+        (entity: {
+          legs: FlightInfo[];
+          price: { formatted: string };
+          score: number;
+        }) => {
+          return {
+            ...entity.legs[0],
+            price: entity.price.formatted,
+            score: entity.score,
+          };
+        }
+      )
       .map((entity: FlightInfo) => {
         return {
           id: entity.id,
@@ -84,6 +94,7 @@ function SearchForm({
           timeDeltaInDays: entity.timeDeltaInDays,
           logosURL: entity.carriers.marketing.map((ele) => ele.logoUrl),
           price: entity.price,
+          score: entity.score,
         };
       });
     console.log(newData);

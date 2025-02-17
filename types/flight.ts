@@ -59,4 +59,5 @@ export interface FlightInfo {
   logosURL: string[];
   carriers: carriersProps;
   price: string;
+  score: number;
 }
