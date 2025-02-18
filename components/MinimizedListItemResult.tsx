@@ -1,26 +1,33 @@
 import Image from "next/image";
+import { getTimeDifferenceInMinutes } from "@/utils/timeHelper";
 import { SlArrowDown } from "react-icons/sl";
-import { FlightInfo, Flight } from "@/types/flight";
-interface MinimizedListResultProps {
+import { FlightInfo } from "@/types/flight";
+interface MinimizedListItemResultProps {
   flightInfo: FlightInfo;
-  departureTime: string[];
-  arrivalTime: string[];
-  departureDay: string;
-  arrivalDay: string;
-  onlyLayoverTime: number;
-  origin: Flight;
-  destination: Flight;
+  isExpanded: boolean;
+  setIsExpanded: (isExpanded: boolean) => void;
 }
-function MinimizedListResult({
+function MinimizedListItemResult({
   flightInfo,
-  departureTime,
-  departureDay,
-  arrivalTime,
-  arrivalDay,
-  origin,
-  destination,
-  onlyLayoverTime,
-}: MinimizedListResultProps) {
+  isExpanded,
+  setIsExpanded,
+}: MinimizedListItemResultProps) {
+  // get departure and arrival time for the whole trip and process info to be in 0 -> 12 am/pm format
+  const departureTime = flightInfo.departure.split("T")[1].split(":");
+  const arrivalTime = flightInfo.arrival.split("T")[1].split(":");
+  const departureDay = +departureTime[0] >= 12 ? "PM" : "AM";
+  const arrivalDay = +arrivalTime[0] >= 12 ? "PM" : "AM";
+  departureTime[0] = (+departureTime[0] % 12 || 12).toString();
+  arrivalTime[0] = (+arrivalTime[0] % 12 || 12).toString();
+  // calculate the layover time if there is only 1 stop
+
+  const onlyLayoverTime =
+    flightInfo.stopCount === 1
+      ? getTimeDifferenceInMinutes(
+          flightInfo.segments[1].departure,
+          flightInfo.segments[0].arrival
+        )
+      : 0;
   return (
     <li className="flex gap-2 justify-between items-center max-w-[736px] w-full p-4 border border-[#dadce0] rounded-lg ">
       <div>
@@ -57,7 +64,11 @@ function MinimizedListResult({
           {flightInfo.durationInMinutes % 60} min
         </p>
         <p>
-          {origin.skyId}-{destination.skyId}
+          {flightInfo.segments[0].origin.flightPlaceId}-
+          {
+            flightInfo.segments[flightInfo.segments.length - 1].destination
+              .flightPlaceId
+          }
         </p>
       </div>
       <div className="flex flex-col">
@@ -84,11 +95,14 @@ function MinimizedListResult({
       <div>
         <p>{flightInfo.price}</p>
       </div>
-      <div className="rounded-full w-[40px] h-[40px] hover:bg-[#f1f3f4] hover:cursor-pointer flex justify-center items-center">
+      <div
+        className="rounded-full w-[40px] h-[40px] hover:bg-[#f1f3f4] hover:cursor-pointer flex justify-center items-center"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
         <SlArrowDown />
       </div>
     </li>
   );
 }
 
-export default MinimizedListResult;
+export default MinimizedListItemResult;

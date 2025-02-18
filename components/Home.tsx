@@ -30,11 +30,7 @@ function Home() {
         setFlightInfos={setFlightInfos}
         flightInfos={flightInfos}
       />
-      <Results
-        origin={origin}
-        destination={destination}
-        flightInfos={flightInfos}
-      />
+      <Results flightInfos={flightInfos} />
     </div>
   );
 }

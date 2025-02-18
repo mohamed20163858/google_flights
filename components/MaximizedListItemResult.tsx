@@ -1,24 +1,22 @@
 import Image from "next/image";
 import { getTimeDifferenceInMinutes } from "@/utils/timeHelper";
 import { SlArrowUp } from "react-icons/sl";
-import { FlightInfo, Flight } from "@/types/flight";
+import { FlightInfo } from "@/types/flight";
 import { formatDate } from "@/utils/timeHelper";
 import { MdOutlineAirlineSeatLegroomReduced } from "react-icons/md";
 import { FaWifi } from "react-icons/fa";
 import { MdOutlineUsb } from "react-icons/md";
 import { MdOndemandVideo } from "react-icons/md";
-
-interface MaximizedListResultProps {
+interface MaximizedListItemResultProps {
   flightInfo: FlightInfo;
-  departureTime: string[];
-  arrivalTime: string[];
-  departureDay: string;
-  arrivalDay: string;
-  onlyLayoverTime: number;
-  origin: Flight;
-  destination: Flight;
+  isExpanded: boolean;
+  setIsExpanded: (isExpanded: boolean) => void;
 }
-function MaximizedListResult({ flightInfo }: MaximizedListResultProps) {
+function MaximizedListItemResult({
+  flightInfo,
+  isExpanded,
+  setIsExpanded,
+}: MaximizedListItemResultProps) {
   const departureDate = formatDate(flightInfo.departure.split("T")[0]);
   return (
     <li className="flex flex-col w-full items-center">
@@ -46,7 +44,10 @@ function MaximizedListResult({ flightInfo }: MaximizedListResultProps) {
             Select flight
           </button>
           <p>{flightInfo.price}</p>
-          <div className="rounded-full w-[40px] h-[40px] hover:bg-[#f1f3f4] hover:cursor-pointer flex justify-center items-center">
+          <div
+            className="rounded-full w-[40px] h-[40px] hover:bg-[#f1f3f4] hover:cursor-pointer flex justify-center items-center"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
             <SlArrowUp />
           </div>
         </div>
@@ -154,4 +155,4 @@ function MaximizedListResult({ flightInfo }: MaximizedListResultProps) {
   );
 }
 
-export default MaximizedListResult;
+export default MaximizedListItemResult;
