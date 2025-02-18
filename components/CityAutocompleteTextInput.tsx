@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { CityAutoCompleteTextInputProps, Flight } from "@/types/flight";
+import { MdOutlineTripOrigin } from "react-icons/md";
+import { MdOutlineLocationOn } from "react-icons/md";
 
 function CityAutocompleteTextInput({
   placeholder,
@@ -65,14 +67,20 @@ function CityAutocompleteTextInput({
 
   return (
     <div className="relative max-w-[282px] max-h-[56px]">
-      <input
-        type="text"
-        name="city"
-        placeholder={placeholder}
-        value={inputValue}
-        onChange={handleInputChange}
-        className="p-2 border rounded w-full"
-      />
+      <div className=" px-4 py-2 border hover:border-black rounded w-full flex gap-2 items-center">
+        {placeholder === "Where from ?" && <MdOutlineTripOrigin />}
+        {placeholder === "Where to ?" && <MdOutlineLocationOn />}
+
+        <input
+          type="text"
+          name="city"
+          placeholder={placeholder}
+          value={inputValue}
+          onChange={handleInputChange}
+          className="outline-none "
+        />
+      </div>
+
       {suggestions.length > 0 && inputValue && (
         <ul className="absolute left-0 right-0 top-full bg-white z-50 shadow-lg max-h-60 overflow-y-auto">
           {suggestions.map((item) => (

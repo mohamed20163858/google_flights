@@ -11,11 +11,6 @@ export interface CityAutoCompleteTextInputProps {
   setSuggestion: (suggestion: Flight) => void;
 }
 export interface SearchFormProps {
-  origin: Flight;
-  setOrigin: (origin: Flight) => void;
-  destination: Flight;
-  setDestination: (destination: Flight) => void;
-  flightInfos: FlightInfo[];
   setFlightInfos: (flightInfos: FlightInfo[]) => void;
 }
 export interface ResultsProps {

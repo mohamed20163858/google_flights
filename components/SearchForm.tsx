@@ -1,16 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
 import CityAutocompleteTextInput from "./CityAutocompleteTextInput";
-import { SearchFormProps, FlightInfo } from "@/types/flight";
+import { FaExchangeAlt } from "react-icons/fa";
+import { SearchFormProps, FlightInfo, Flight } from "@/types/flight";
 import Date from "./Date";
+import SimpleDropDownMenu from "./SimpleDropDownMenu";
 
-function SearchForm({
-  origin,
-  destination,
-  setOrigin,
-  setDestination,
-  setFlightInfos,
-}: SearchFormProps) {
+function SearchForm({ setFlightInfos }: SearchFormProps) {
+  const [origin, setOrigin] = useState<Flight>({
+    entityId: "",
+    skyId: "",
+    flightPlaceType: "",
+    localizedName: "",
+    country: "",
+  });
+  const [destination, setDestination] = useState<Flight>({
+    entityId: "",
+    skyId: "",
+    flightPlaceType: "",
+    localizedName: "",
+    country: "",
+  });
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
 
@@ -104,22 +114,44 @@ function SearchForm({
   };
 
   return (
-    <form
-      className="flex justify-center items-center gap-4"
-      onSubmit={handleSubmit}
-    >
-      <CityAutocompleteTextInput
-        placeholder="Where from ?"
-        suggestion={origin}
-        setSuggestion={setOrigin}
-      />
-      <CityAutocompleteTextInput
-        placeholder="Where to ?"
-        suggestion={destination}
-        setSuggestion={setDestination}
-      />
-      <Date date={departureDate} setDate={setDepartureDate} />
-      <Date date={returnDate} setDate={setReturnDate} />
+    <form className="flex flex-col  gap-4" onSubmit={handleSubmit}>
+      <div className="flex items-center gap-4">
+        <SimpleDropDownMenu />
+      </div>
+      <div className="flex justify-center items-center gap-4">
+        <div className="flex items-center">
+          <CityAutocompleteTextInput
+            placeholder="Where from ?"
+            suggestion={origin}
+            setSuggestion={setOrigin}
+          />
+          <button
+            className={`relative z-10 flex justify-center items-center w-[30px] h-[30px] border borde-[#dadce0] rounded-[30px] ml-[-12px] bg-white ${
+              origin.skyId && destination.skyId
+                ? "hover:bg-[#f1f3f4] "
+                : "text-[#dadce0]"
+            }  `}
+            disabled={origin.skyId && destination.skyId ? false : true}
+            onClick={() => {
+              setOrigin({ ...destination });
+              setDestination({ ...origin });
+            }}
+          >
+            <FaExchangeAlt />
+          </button>
+          <div className="ml-[-12px]">
+            <CityAutocompleteTextInput
+              placeholder="Where to ?"
+              suggestion={destination}
+              setSuggestion={setDestination}
+            />
+          </div>
+        </div>
+
+        <Date date={departureDate} setDate={setDepartureDate} />
+        <Date date={returnDate} setDate={setReturnDate} />
+      </div>
+
       <button type="submit">Search</button>
     </form>
   );

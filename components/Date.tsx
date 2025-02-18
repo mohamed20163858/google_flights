@@ -6,16 +6,14 @@ export default function DateInput({ date, setDate }: DateProps) {
   };
 
   return (
-    <div className="p-4">
-      <input
-        id="dateInput"
-        type="date"
-        value={date}
-        min={new Date().toISOString().split("T")[0]}
-        onChange={handleDateChange}
-        placeholder="Date"
-        className="mt-1 p-2 border rounded"
-      />
-    </div>
+    <input
+      id="dateInput"
+      type="date"
+      value={date}
+      min={new Date().toISOString().split("T")[0]}
+      onChange={handleDateChange}
+      placeholder="Date"
+      className="mt-1 p-2 border rounded"
+    />
   );
 }
