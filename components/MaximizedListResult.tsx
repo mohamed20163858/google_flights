@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTimeDifferenceInMinutes } from "@/utils/timeHelper";
 import { SlArrowUp } from "react-icons/sl";
 import { FlightInfo, Flight } from "@/types/flight";
 import { formatDate } from "@/utils/timeHelper";
@@ -17,16 +18,7 @@ interface MaximizedListResultProps {
   origin: Flight;
   destination: Flight;
 }
-function MaximizedListResult({
-  flightInfo,
-  departureTime,
-  departureDay,
-  arrivalTime,
-  arrivalDay,
-  origin,
-  destination,
-  onlyLayoverTime,
-}: MaximizedListResultProps) {
+function MaximizedListResult({ flightInfo }: MaximizedListResultProps) {
   const departureDate = formatDate(flightInfo.departure.split("T")[0]);
   return (
     <li className="flex flex-col w-full items-center">
@@ -59,14 +51,29 @@ function MaximizedListResult({
           </div>
         </div>
       </div>
-      <div className=" max-w-[736px] w-full  border border-[#dadce0]  mb-4 ">
-        {flightInfo.segments.map((segment) => {
+      <div className=" max-w-[736px] w-full  border border-[#dadce0] pt-6 mb-4 ">
+        {flightInfo.segments.map((segment, idx) => {
           const url = flightInfo.logosURL.find(
             (logo) => logo.alternateId === segment.marketingCarrier.alternateId
           )?.logoUrl;
-          console.log(url);
+          // get departure and arrival time for the whole trip and process info to be in 0 -> 12 am/pm format
+          const departureTime = segment.departure.split("T")[1].split(":");
+          const arrivalTime = segment.arrival.split("T")[1].split(":");
+          const departureDay = +departureTime[0] >= 12 ? "PM" : "AM";
+          const arrivalDay = +arrivalTime[0] >= 12 ? "PM" : "AM";
+          departureTime[0] = (+departureTime[0] % 12 || 12).toString();
+          arrivalTime[0] = (+arrivalTime[0] % 12 || 12).toString();
+          // calculate the layover time
+
+          const LayoverTime =
+            idx < flightInfo.segments.length - 1
+              ? getTimeDifferenceInMinutes(
+                  flightInfo.segments[idx + 1].departure,
+                  flightInfo.segments[idx].arrival
+                )
+              : 0;
           return (
-            <div key={segment.flightNumber} className="flex py-4 pl-4 gap-4">
+            <div key={segment.flightNumber} className="flex mt-4 pl-4 gap-4">
               <div className="flex justify-between items-center gap-[40px] h-[76px]">
                 <div className="w-[40px] h-[40px]">
                   {flightInfo.logosURL.length > 1 && (
@@ -88,9 +95,21 @@ function MaximizedListResult({
               <div className="flex flex-col grow">
                 <div className="flex justify-between ">
                   <div>
-                    <p>hi</p>
-                    <p>hi</p>
-                    <p>hi</p>
+                    <p>
+                      {" "}
+                      {departureTime[0]}:{departureTime[1]} {departureDay} .{" "}
+                      {segment.origin.name} {segment.origin.type} (
+                      {segment.origin.flightPlaceId})
+                    </p>
+                    <p>
+                      Travel time: {Math.floor(segment.durationInMinutes / 60)}{" "}
+                      hr {segment.durationInMinutes % 60} min
+                    </p>
+                    <p>
+                      {arrivalTime[0]}:{arrivalTime[1]} {arrivalDay}.{" "}
+                      {segment.destination.name} {segment.destination.type} (
+                      {segment.destination.flightPlaceId})
+                    </p>
                   </div>
 
                   <div>
@@ -112,8 +131,20 @@ function MaximizedListResult({
                     </div>
                   </div>
                 </div>
-                <p className="border-b border-[#dadce0]">bye</p>
-                <p className="border-b border-[#dadce0]">hours</p>
+                <p
+                  className={`${
+                    idx < flightInfo.segments.length - 1
+                      ? "border-b border-[#dadce0]"
+                      : ""
+                  } pt-2 py-6`}
+                >
+                  {segment.marketingCarrier.name}
+                </p>
+                {idx < flightInfo.segments.length - 1 && (
+                  <p className="border-b border-[#dadce0] py-6">
+                    {Math.floor(LayoverTime / 60)} hr {LayoverTime % 60} min
+                  </p>
+                )}
               </div>
             </div>
           );
