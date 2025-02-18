@@ -40,9 +40,10 @@ export interface Segment {
   flightNumber: string;
   origin: AirportInfo;
   destination: AirportInfo;
-  marketingCarrier: { name: string };
+  marketingCarrier: { name: string; alternateId: string };
 }
 export interface logo {
+  alternateId: string;
   logoUrl: string;
 }
 export interface carriersProps {
@@ -56,7 +57,7 @@ export interface FlightInfo {
   segments: Segment[];
   stopCount: number;
   timeDeltaInDays: number;
-  logosURL: string[];
+  logosURL: logo[];
   carriers: carriersProps;
   price: string;
   score: number;

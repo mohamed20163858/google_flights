@@ -28,7 +28,7 @@ function MinimizedListResult({
           src={
             flightInfo.logosURL.length > 1
               ? "/multi.png"
-              : flightInfo.logosURL[0]
+              : flightInfo.logosURL[0].logoUrl
           }
           alt="Airport Image"
           width={40} // Set width

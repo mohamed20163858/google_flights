@@ -1,6 +1,7 @@
 import { ResultsProps } from "@/types/flight";
 import { getTimeDifferenceInMinutes } from "@/utils/timeHelper";
 import MinimizedListResult from "./MinimizedListResult";
+import MaximizedListResult from "./MaximizedListResult";
 
 function Results({ origin, destination, flightInfos }: ResultsProps) {
   return (
@@ -26,17 +27,31 @@ function Results({ origin, destination, flightInfos }: ResultsProps) {
                 : 0;
 
             return (
-              <MinimizedListResult
+              <div
                 key={flightInfo.id}
-                origin={origin}
-                destination={destination}
-                departureTime={departureTime}
-                arrivalTime={arrivalTime}
-                departureDay={departureDay}
-                arrivalDay={arrivalDay}
-                onlyLayoverTime={onlyLayoverTime}
-                flightInfo={flightInfo}
-              />
+                className="w-full flex flex-col justify-center items-center"
+              >
+                <MinimizedListResult
+                  origin={origin}
+                  destination={destination}
+                  departureTime={departureTime}
+                  arrivalTime={arrivalTime}
+                  departureDay={departureDay}
+                  arrivalDay={arrivalDay}
+                  onlyLayoverTime={onlyLayoverTime}
+                  flightInfo={flightInfo}
+                />
+                <MaximizedListResult
+                  origin={origin}
+                  destination={destination}
+                  departureTime={departureTime}
+                  arrivalTime={arrivalTime}
+                  departureDay={departureDay}
+                  arrivalDay={arrivalDay}
+                  onlyLayoverTime={onlyLayoverTime}
+                  flightInfo={flightInfo}
+                />
+              </div>
             );
           })}
       </ul>

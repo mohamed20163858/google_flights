@@ -92,7 +92,9 @@ function SearchForm({
           }),
           stopCount: entity.stopCount,
           timeDeltaInDays: entity.timeDeltaInDays,
-          logosURL: entity.carriers.marketing.map((ele) => ele.logoUrl),
+          logosURL: entity.carriers.marketing.map((ele) => {
+            return { logoUrl: ele.logoUrl, alternateId: ele.alternateId };
+          }),
           price: entity.price,
           score: entity.score,
         };
