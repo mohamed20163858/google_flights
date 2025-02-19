@@ -108,6 +108,7 @@ function CityAutocompleteTextInput({
             onChange={handleInputChange}
             style={{ width }}
             className="outline-none text-black"
+            required
           />
           <p className="text-[12px] mb-[-5px]">{suggestion.skyId}</p>
         </div>

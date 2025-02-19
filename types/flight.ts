@@ -12,6 +12,8 @@ export interface CityAutoCompleteTextInputProps {
 }
 export interface SearchFormProps {
   setFlightInfos: (flightInfos: FlightInfo[]) => void;
+  isSubmitted: boolean;
+  setIsSubmitted: (isSubmitted: boolean) => void;
 }
 export interface ResultsProps {
   origin: Flight;

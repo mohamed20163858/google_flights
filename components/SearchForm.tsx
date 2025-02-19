@@ -26,7 +26,11 @@ interface PassengerCounts {
   children: number;
   infants: number;
 }
-function SearchForm({ setFlightInfos }: SearchFormProps) {
+function SearchForm({
+  setFlightInfos,
+  isSubmitted,
+  setIsSubmitted,
+}: SearchFormProps) {
   const [origin, setOrigin] = useState<Flight>({
     entityId: "",
     skyId: "",
@@ -53,7 +57,6 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
     infants: 0,
   });
   const [rotated, setRotated] = useState(false); //to rotate button
-  const [isSumbitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -226,7 +229,7 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
     if (
       origin.entityId &&
       destination.entityId &&
-      isSumbitted &&
+      isSubmitted &&
       ((tripType === TripType.OneWay && departureDate) ||
         (tripType === TripType.RoundTrip && departureDate && returnDate))
     ) {
@@ -235,7 +238,7 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
   }, [
     origin.entityId,
     destination.entityId,
-    isSumbitted,
+    isSubmitted,
     tripType,
     departureDate,
     returnDate,
@@ -246,10 +249,17 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
     passengers.infants,
     selectedClass,
     setFlightInfos,
+    setIsSubmitted,
   ]);
 
   return (
-    <form className="flex flex-col  gap-4" onSubmit={handleSubmit}>
+    <form
+      className={`flex flex-col  gap-4 my-[40px] ${
+        !isSubmitted &&
+        "mx-[16px] pt-[8px] pb-[48px] px-[16px] rounded-[8px] shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)]"
+      }`}
+      onSubmit={handleSubmit}
+    >
       <div className="flex items-center gap-4">
         <SimpleDropDownMenu tripType={tripType} setTripType={setTripType} />
         <PassengerSelector
@@ -316,10 +326,27 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
           <Date date={returnDate} setDate={setReturnDate} />
         )} */}
       </div>
-      {!isSumbitted && (
+      {!isSubmitted && (
         <button
           type="submit"
-          className="flex items-center gap-2 w-fit px-4 py-2 bg-[#1a73e8] text-white self-center rounded-[24px]"
+          disabled={
+            !(
+              origin.entityId &&
+              destination.entityId &&
+              ((tripType === TripType.OneWay && departureDate) ||
+                (tripType === TripType.RoundTrip &&
+                  departureDate &&
+                  returnDate))
+            )
+          }
+          className={`flex items-center gap-2 w-fit px-4 py-2 ${
+            origin.entityId &&
+            destination.entityId &&
+            ((tripType === TripType.OneWay && departureDate) ||
+              (tripType === TripType.RoundTrip && departureDate && returnDate))
+              ? "bg-[#1a73e8] text-white"
+              : "bg-gray-300 text-gray-600 cursor-not-allowed"
+          }  self-center rounded-[24px] mb-[-64px] mt-[44px]`}
         >
           <MdSearch size={20} />
           <p>Search</p>
