@@ -29,77 +29,82 @@ function MinimizedListItemResult({
         )
       : 0;
   return (
-    <li className="flex gap-2 justify-between items-center max-w-[736px] w-full p-4 border border-[#dadce0] rounded-lg ">
-      <div>
-        <Image
-          src={
-            flightInfo.logosURL.length > 1
-              ? "/multi.png"
-              : flightInfo.logosURL[0].logoUrl
-          }
-          alt="Airport Image"
-          width={40} // Set width
-          height={40} // Set height
-          priority // Ensures it loads immediately
-        />
-      </div>
-      <div className="flex flex-col">
-        <p>
-          {departureTime[0]}:{departureTime[1]} {departureDay} -{" "}
-          {arrivalTime[0]}:{arrivalTime[1]} {arrivalDay}
-        </p>
-        <p>
-          {[
-            ...new Set(
-              flightInfo.segments.map(
-                (segment) => segment.marketingCarrier.name
-              )
-            ),
-          ].join(", ")}
-        </p>
-      </div>
-      <div className="flex flex-col">
-        <p>
-          {Math.floor(flightInfo.durationInMinutes / 60)} hr{" "}
-          {flightInfo.durationInMinutes % 60} min
-        </p>
-        <p>
-          {flightInfo.segments[0].origin.flightPlaceId}-
-          {
-            flightInfo.segments[flightInfo.segments.length - 1].destination
-              .flightPlaceId
-          }
-        </p>
-      </div>
-      <div className="flex flex-col">
-        <p>
-          {flightInfo.stopCount > 0
-            ? `${flightInfo.stopCount} stop`
-            : "Nonstop"}
-        </p>
-        {flightInfo.stopCount === 1 && (
+    <li className="flex gap-2 justify-between items-center max-w-[736px] w-full p-4 border text-black border-[#dadce0] rounded-lg ">
+      <div className="flex items-center gap-[30px]">
+        <div>
+          <Image
+            src={
+              flightInfo.logosURL.length > 1
+                ? "/multi.png"
+                : flightInfo.logosURL[0].logoUrl
+            }
+            alt="Airport Image"
+            width={40} // Set width
+            height={40} // Set height
+            priority // Ensures it loads immediately
+          />
+        </div>
+        <div className="flex flex-col w-[120px]">
           <p>
-            {Math.floor(onlyLayoverTime / 60)} hrs {onlyLayoverTime % 60} min{" "}
-            {flightInfo.segments[0].destination.flightPlaceId}
+            {departureTime[0]}:{departureTime[1]} {departureDay} -{" "}
+            {arrivalTime[0]}:{arrivalTime[1]} {arrivalDay}
           </p>
-        )}
-        {flightInfo.stopCount > 1 && (
+          <p className="text-[#70757a] text-[12px]">
+            {[
+              ...new Set(
+                flightInfo.segments.map(
+                  (segment) => segment.marketingCarrier.name
+                )
+              ),
+            ].join(", ")}
+          </p>
+        </div>
+        <div className="flex flex-col w-[120px]">
           <p>
-            {flightInfo.segments
-              .map((segment) => segment.destination.flightPlaceId)
-              .slice(0, flightInfo.segments.length - 1)
-              .join(", ")}
+            {Math.floor(flightInfo.durationInMinutes / 60)} hr{" "}
+            {flightInfo.durationInMinutes % 60} min
           </p>
-        )}
+          <p className="text-[#70757a] text-[12px]">
+            {flightInfo.segments[0].origin.flightPlaceId}-
+            {
+              flightInfo.segments[flightInfo.segments.length - 1].destination
+                .flightPlaceId
+            }
+          </p>
+        </div>
+        <div className="flex flex-col w-[120px]">
+          <p>
+            {flightInfo.stopCount > 0
+              ? `${flightInfo.stopCount} stop`
+              : "Nonstop"}
+          </p>
+          {flightInfo.stopCount === 1 && (
+            <p className="text-[#70757a] text-[12px]">
+              {Math.floor(onlyLayoverTime / 60)} hrs {onlyLayoverTime % 60} min{" "}
+              {flightInfo.segments[0].destination.flightPlaceId}
+            </p>
+          )}
+          {flightInfo.stopCount > 1 && (
+            <p>
+              {flightInfo.segments
+                .map((segment) => segment.destination.flightPlaceId)
+                .slice(0, flightInfo.segments.length - 1)
+                .join(", ")}
+            </p>
+          )}
+        </div>
       </div>
-      <div>
-        <p>{flightInfo.price}</p>
-      </div>
-      <div
-        className="rounded-full w-[40px] h-[40px] hover:bg-[#f1f3f4] hover:cursor-pointer flex justify-center items-center"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <SlArrowDown />
+
+      <div className="flex items-center gap-[20px]">
+        <div>
+          <p>{flightInfo.price}</p>
+        </div>
+        <div
+          className="rounded-full w-[40px] h-[40px] hover:bg-[#f1f3f4] hover:cursor-pointer flex justify-center items-center"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          <SlArrowDown />
+        </div>
       </div>
     </li>
   );
