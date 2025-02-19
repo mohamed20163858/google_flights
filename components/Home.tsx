@@ -9,7 +9,8 @@ function Home() {
   return (
     <div className="flex flex-col justify-center items-center">
       <SearchForm setFlightInfos={setFlightInfos} />
-      <Results flightInfos={flightInfos} />
+      {flightInfos.length > 0 && <Results flightInfos={flightInfos} />}
+      {flightInfos.length === 0 && <div>There is no flights!</div>}
     </div>
   );
 }

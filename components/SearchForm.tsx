@@ -10,6 +10,7 @@ import CustomDateInput from "./CustomDateInput";
 import SimpleDropDownMenu from "./TripSelector";
 import FlightClassSelector from "./FlightClassSelector";
 import PassengerSelector from "./PassangerSelector";
+
 enum TripType {
   RoundTrip = "Round trip",
   OneWay = "One way",

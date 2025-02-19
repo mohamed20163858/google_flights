@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { CityAutoCompleteTextInputProps, Flight } from "@/types/flight";
@@ -17,6 +17,8 @@ function CityAutocompleteTextInput({
       : ""
   );
   const [suggestions, setSuggestions] = useState<Flight[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (suggestion.entityId) {
       setInputValue(
@@ -24,6 +26,20 @@ function CityAutocompleteTextInput({
       );
     }
   }, [suggestion]);
+
+  // Close suggestions popup if clicking outside the component
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setSuggestions([]);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -68,7 +84,7 @@ function CityAutocompleteTextInput({
   };
 
   return (
-    <div className="relative max-w-[282px] max-h-[56px]">
+    <div ref={containerRef} className="relative max-w-[282px] max-h-[56px]">
       <div className=" px-4 py-2 border hover:border-black rounded w-full flex gap-2 items-center">
         {placeholder === "Where from ?" && <MdOutlineTripOrigin />}
         {placeholder === "Where to ?" && <MdOutlineLocationOn size={20} />}
