@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { FaCaretDown } from "react-icons/fa";
+import { FaCaretUp } from "react-icons/fa";
+import { MdOutlinePersonOutline } from "react-icons/md";
 
 interface PassengerCounts {
   adults: number;
@@ -47,22 +50,32 @@ export default function PassengerSelector({
     passengers.adults + passengers.children + passengers.infants;
 
   return (
-    <div className="relative w-64 z-20">
+    <div className="relative z-20">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full text-left p-2 border rounded-md"
+        className="w-full flex gap-2 items-center outline-none px-4 py-2  hover:bg-[#f1f3f4]  border-[#1a73e8] focus:border-b focus:bg-[#d2e3fc] whitespace-nowrap"
       >
-        {totalPassengers} Passenger{totalPassengers > 1 ? "s" : ""}
+        <div className="flex gap-2 items-center">
+          <div className="text-gray-500">
+            <MdOutlinePersonOutline size={24} />
+          </div>
+
+          <div>{totalPassengers}</div>
+        </div>
+
+        {!isOpen && <FaCaretDown className="ml-2 text-gray-500" />}
+        {isOpen && <FaCaretUp className="ml-2 text-[#1a73e8]" />}
+        {/* {totalPassengers} Passenger{totalPassengers > 1 ? "s" : ""} */}
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-full bg-white shadow-lg border rounded-md p-4">
+        <div className="absolute left-0 mt-2 w-auto min-w-full bg-white shadow-lg border rounded-md p-4">
           {(["adults", "children", "infants"] as const).map((type) => (
             <div
               key={uuidv4()}
               className="flex justify-between items-center mb-2"
             >
-              <span className="capitalize">{type}</span>
+              <span className="capitalize mr-3">{type}</span>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleDecrement(type)}
