@@ -145,7 +145,7 @@ export default function CustomDateInput({
       >
         <div className="flex flex-grow items-center gap-2">
           {placeholder === "Departure" && <MdDateRange size={20} />}
-          <div className=" text-center select-none">
+          <div className=" text-center select-none whitespace-nowrap mr-2">
             {date ? formatDate(date) : placeholder}
           </div>
         </div>

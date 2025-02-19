@@ -52,6 +52,7 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
     infants: 0,
   });
   const [rotated, setRotated] = useState(false); //to rotate button
+  const [isSumbitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -84,9 +85,9 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
       }
     );
   }, [setOrigin]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_BACKEND_URL
@@ -150,7 +151,101 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
       });
     console.log(newData);
     setFlightInfos(newData);
+    setIsSubmitted(true);
   };
+  useEffect(() => {
+    const updateResults = async () => {
+      const response = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL
+        }/v2/flights/searchFlights?originSkyId=${
+          origin.skyId
+        }&destinationSkyId=${destination.skyId}&originEntityId=${
+          origin.entityId
+        }&destinationEntityId=${
+          destination.entityId
+        }&date=${departureDate}&cabinClass=${selectedClass}&adults=${
+          passengers.adults
+        }&childrens=${passengers.children}&infants=${passengers.infants}${
+          tripType === TripType.RoundTrip && `&returnDate=${returnDate}`
+        }`,
+        {
+          method: "GET",
+          headers: {
+            "x-rapidapi-key": process.env.NEXT_PUBLIC_API_VALUE as string,
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      const newData = await data?.data?.itineraries
+        ?.map(
+          (entity: {
+            legs: FlightInfo[];
+            price: { formatted: string };
+            score: number;
+          }) => {
+            return {
+              ...entity.legs[0],
+              price: entity.price.formatted,
+              score: entity.score,
+            };
+          }
+        )
+        .map((entity: FlightInfo) => {
+          return {
+            id: entity.id,
+            departure: entity.departure,
+            arrival: entity.arrival,
+            durationInMinutes: entity.durationInMinutes,
+            segments: entity.segments.map((segment) => {
+              return {
+                departure: segment.departure,
+                arrival: segment.arrival,
+                durationInMinutes: segment.durationInMinutes,
+                flightNumber: segment.flightNumber,
+                marketingCarrier: segment.marketingCarrier,
+                origin: segment.origin,
+                destination: segment.destination,
+              };
+            }),
+            stopCount: entity.stopCount,
+            timeDeltaInDays: entity.timeDeltaInDays,
+            logosURL: entity.carriers.marketing.map((ele) => {
+              return { logoUrl: ele.logoUrl, alternateId: ele.alternateId };
+            }),
+            price: entity.price,
+            score: entity.score,
+          };
+        });
+      console.log(newData);
+      setFlightInfos(newData);
+      setIsSubmitted(true);
+    };
+    if (
+      origin.entityId &&
+      destination.entityId &&
+      isSumbitted &&
+      ((tripType === TripType.OneWay && departureDate) ||
+        (tripType === TripType.RoundTrip && departureDate && returnDate))
+    ) {
+      updateResults();
+    }
+  }, [
+    origin.entityId,
+    destination.entityId,
+    isSumbitted,
+    tripType,
+    departureDate,
+    returnDate,
+    origin.skyId,
+    destination.skyId,
+    passengers.adults,
+    passengers.children,
+    passengers.infants,
+    selectedClass,
+    setFlightInfos,
+  ]);
 
   return (
     <form className="flex flex-col  gap-4" onSubmit={handleSubmit}>
@@ -220,14 +315,15 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
           <Date date={returnDate} setDate={setReturnDate} />
         )} */}
       </div>
-
-      <button
-        type="submit"
-        className="flex items-center gap-2 w-fit px-4 py-2 bg-[#1a73e8] text-white self-center rounded-[24px]"
-      >
-        <MdSearch size={20} />
-        <p>Search</p>
-      </button>
+      {!isSumbitted && (
+        <button
+          type="submit"
+          className="flex items-center gap-2 w-fit px-4 py-2 bg-[#1a73e8] text-white self-center rounded-[24px]"
+        >
+          <MdSearch size={20} />
+          <p>Search</p>
+        </button>
+      )}
     </form>
   );
 }
