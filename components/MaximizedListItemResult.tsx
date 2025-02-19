@@ -22,7 +22,7 @@ function MaximizedListItemResult({
   const departureDate = formatDate(flightInfo.departure.split("T")[0]);
   return (
     <li className="flex flex-col w-full items-center">
-      <div className="flex gap-2 justify-between items-center max-w-[736px] w-full p-4 border border-[#dadce0] rounded-t-lg">
+      <div className="flex gap-2 justify-between items-center max-w-[736px] text-black  w-full p-4 border border-[#dadce0] rounded-t-lg">
         <div className="flex gap-[40px] items-center">
           <Image
             src={
@@ -57,7 +57,7 @@ function MaximizedListItemResult({
           </div>
         </div>
       </div>
-      <div className=" max-w-[736px] w-full  border border-[#dadce0] pt-6 mb-4 ">
+      <div className=" max-w-[736px] w-full  border border-[#dadce0] pt-6 mb-4 text-[10px] ">
         {flightInfo.segments.map((segment, idx) => {
           const url = flightInfo.logosURL.find(
             (logo) => logo.alternateId === segment.marketingCarrier.alternateId
@@ -99,39 +99,39 @@ function MaximizedListItemResult({
                 </div>
               </div>
               <div className="flex flex-col grow">
-                <div className="flex justify-between ">
+                <div className="flex gap-5 justify-between ">
                   <div>
-                    <p>
+                    <p className="text-black text-[14px]">
                       {" "}
                       {departureTime[0]}:{departureTime[1]} {departureDay} .{" "}
                       {segment.origin.name} {segment.origin.type} (
                       {segment.origin.flightPlaceId})
                     </p>
-                    <p>
+                    <p className="my-2 text-[12px]">
                       Travel time: {Math.floor(segment.durationInMinutes / 60)}{" "}
                       hr {segment.durationInMinutes % 60} min
                     </p>
-                    <p>
+                    <p className="max-w-[267px] text-black text-[14px]">
                       {arrivalTime[0]}:{arrivalTime[1]} {arrivalDay}.{" "}
                       {segment.destination.name} {segment.destination.type} (
                       {segment.destination.flightPlaceId})
                     </p>
                   </div>
 
-                  <div>
-                    <div className="flex gap-2 items-center mr-[40px]">
+                  <div className="mr-[20px]">
+                    <div className="flex gap-2 items-center ">
                       <MdOutlineAirlineSeatLegroomReduced />
                       <p>Below average legroom (31 in)</p>
                     </div>
-                    <div className="flex gap-2 items-center mr-[40px]">
+                    <div className="flex gap-2 items-center">
                       <FaWifi />
                       <p>Wi-Fi for a fee</p>
                     </div>
-                    <div className="flex gap-2 items-center mr-[40px]">
+                    <div className="flex gap-2 items-center">
                       <MdOutlineUsb />
                       <p>In-seat USB outlet</p>
                     </div>
-                    <div className="flex gap-2 items-center mr-[40px]">
+                    <div className="flex gap-2 items-center ">
                       <MdOndemandVideo />
                       <p>On-demand video</p>
                     </div>
