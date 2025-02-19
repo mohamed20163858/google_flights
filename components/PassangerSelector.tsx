@@ -52,6 +52,7 @@ export default function PassengerSelector({
   return (
     <div className="relative z-20">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex gap-2 items-center outline-none px-4 py-2  hover:bg-[#f1f3f4]  border-[#1a73e8] focus:border-b focus:bg-[#d2e3fc] whitespace-nowrap"
       >
@@ -78,6 +79,7 @@ export default function PassengerSelector({
               <span className="capitalize mr-3">{type}</span>
               <div className="flex items-center gap-2">
                 <button
+                  type="button"
                   onClick={() => handleDecrement(type)}
                   className={`w-8 h-8 flex items-center justify-center border rounded-md ${
                     type === "adults" && tempPassengers.adults === 1
@@ -90,6 +92,7 @@ export default function PassengerSelector({
                 </button>
                 <span className="w-6 text-center">{tempPassengers[type]}</span>
                 <button
+                  type="button"
                   onClick={() => handleIncrement(type)}
                   className="w-8 h-8 flex items-center justify-center border rounded-md"
                 >
@@ -101,12 +104,14 @@ export default function PassengerSelector({
 
           <div className="flex justify-end gap-2 mt-4">
             <button
+              type="button"
               onClick={handleCancel}
               className="px-3 py-2 border rounded-md"
             >
               Cancel
             </button>
             <button
+              type="button"
               onClick={handleDone}
               className="px-3 py-2 bg-blue-500 text-white rounded-md"
             >

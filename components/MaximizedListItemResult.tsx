@@ -42,7 +42,10 @@ function MaximizedListItemResult({
         </div>
 
         <div className="flex gap-4 items-center">
-          <button className="border border-[#dadce0] rounded-[16px] text-[#1A73E8] px-[23px] py-[4px]">
+          <button
+            type="button"
+            className="border border-[#dadce0] rounded-[16px] text-[#1A73E8] px-[23px] py-[4px]"
+          >
             Select flight
           </button>
           <p>{flightInfo.price}</p>

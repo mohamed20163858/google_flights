@@ -153,6 +153,7 @@ export default function CustomDateInput({
         {date && (
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 changeDateBy(-1);
@@ -163,6 +164,7 @@ export default function CustomDateInput({
               <FaChevronLeft size={16} />
             </button>
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 changeDateBy(1);
@@ -182,6 +184,7 @@ export default function CustomDateInput({
           {/* Calendar Header */}
           <div className="flex justify-between items-center mb-2">
             <button
+              type="button"
               onClick={prevMonth}
               className="text-gray-500 hover:text-gray-700"
             >
@@ -191,6 +194,7 @@ export default function CustomDateInput({
               {monthNames[calendarMonth]} {calendarYear}
             </div>
             <button
+              type="button"
               onClick={nextMonth}
               className="text-gray-500 hover:text-gray-700"
             >
@@ -220,6 +224,7 @@ export default function CustomDateInput({
               }
               return (
                 <button
+                  type="button"
                   key={idx}
                   onClick={() => handleDayClick(day)}
                   disabled={isDisabled}
@@ -238,12 +243,14 @@ export default function CustomDateInput({
           {/* Reset and Done Buttons */}
           <div className="flex justify-between mt-3">
             <button
+              type="button"
               onClick={resetDate}
               className="px-3 py-1 bg-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-400"
             >
               Reset
             </button>
             <button
+              type="button"
               onClick={() => setIsOpen(false)}
               className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600"
             >

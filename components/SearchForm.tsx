@@ -173,6 +173,7 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
             setSuggestion={setOrigin}
           />
           <button
+            type="button"
             className={`relative z-10 flex justify-center items-center w-[30px] h-[30px] border borde-[#dadce0] rounded-[30px] ml-[-12px] bg-white  ${
               origin.skyId && destination.skyId
                 ? "hover:bg-[#f1f3f4] "

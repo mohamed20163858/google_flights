@@ -38,6 +38,7 @@ export default function FlightClassSelector({
     <div className="relative">
       {/* Dropdown Button */}
       <button
+        type="button"
         className="w-full flex gap-2 items-center outline-none px-4 py-2 hover:bg-[#f1f3f4] border-[#1a73e8] focus:border-b focus:bg-[#d2e3fc] whitespace-nowrap"
         onClick={() => setIsOpen(!isOpen)}
       >
