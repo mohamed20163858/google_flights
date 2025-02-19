@@ -1,4 +1,5 @@
 import { ThemeProvider } from "next-themes";
+import Navbar from "@/components/Navbar";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
@@ -25,7 +26,10 @@ export default function RootLayout({
       <body
         className={`${roboto.variable} antialiased text-[#70757a] dark:bg-gray-900 dark:text-white`}
       >
-        <ThemeProvider attribute="class">{children}</ThemeProvider>
+        <ThemeProvider attribute="class">
+          <Navbar />
+          <main>{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );

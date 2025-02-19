@@ -254,7 +254,7 @@ function SearchForm({
 
   return (
     <form
-      className={`flex flex-col  gap-4 my-[40px] bg-white ${
+      className={`flex flex-col  gap-4 mb-[40px] mt-[20px] bg-white ${
         isSubmitted ? "dark:bg-inherit" : "dark:bg-[#3c4043]"
       }  ${
         !isSubmitted &&

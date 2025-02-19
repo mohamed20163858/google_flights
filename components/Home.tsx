@@ -1,4 +1,5 @@
 "use client";
+import LandingImage from "./LandingImage";
 import Results from "./Results";
 import SearchForm from "./SearchForm";
 import { FlightInfo } from "@/types/flight";
@@ -9,6 +10,7 @@ function Home() {
 
   return (
     <div className="flex flex-col justify-center items-center">
+      {!isSubmitted && <LandingImage />}
       <SearchForm
         setFlightInfos={setFlightInfos}
         isSubmitted={isSubmitted}

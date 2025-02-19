@@ -184,7 +184,7 @@ export default function CustomDateInput({
 
       {/* Calendar Popup */}
       {isOpen && (
-        <div className="absolute z-30 mt-2 bg-white dark:bg-[#394457]  border rounded-md p-4 w-72">
+        <div className="absolute bottom-0 z-30 mt-2 bg-white dark:bg-[#394457]  border rounded-md p-4 w-72">
           {/* Calendar Header */}
           <div className="flex justify-between items-center mb-2">
             <button
