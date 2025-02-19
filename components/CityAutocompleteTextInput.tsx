@@ -71,7 +71,7 @@ function CityAutocompleteTextInput({
     <div className="relative max-w-[282px] max-h-[56px]">
       <div className=" px-4 py-2 border hover:border-black rounded w-full flex gap-2 items-center">
         {placeholder === "Where from ?" && <MdOutlineTripOrigin />}
-        {placeholder === "Where to ?" && <MdOutlineLocationOn />}
+        {placeholder === "Where to ?" && <MdOutlineLocationOn size={20} />}
 
         <input
           type="text"

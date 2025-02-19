@@ -2,8 +2,11 @@
 import { useEffect, useState } from "react";
 import CityAutocompleteTextInput from "./CityAutocompleteTextInput";
 import { FaExchangeAlt } from "react-icons/fa";
+import { MdSearch } from "react-icons/md";
+
 import { SearchFormProps, FlightInfo, Flight } from "@/types/flight";
-import Date from "./Date";
+// import Date from "./Date";
+import CustomDateInput from "./CustomDateInput";
 import SimpleDropDownMenu from "./TripSelector";
 import FlightClassSelector from "./FlightClassSelector";
 import PassengerSelector from "./PassangerSelector";
@@ -48,6 +51,8 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
     children: 0,
     infants: 0,
   });
+  const [rotated, setRotated] = useState(false); //to rotate button
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function (position) {
@@ -168,18 +173,23 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
             setSuggestion={setOrigin}
           />
           <button
-            className={`relative z-10 flex justify-center items-center w-[30px] h-[30px] border borde-[#dadce0] rounded-[30px] ml-[-12px] bg-white ${
+            className={`relative z-10 flex justify-center items-center w-[30px] h-[30px] border borde-[#dadce0] rounded-[30px] ml-[-12px] bg-white  ${
               origin.skyId && destination.skyId
                 ? "hover:bg-[#f1f3f4] "
                 : "text-[#dadce0]"
-            }  `}
+            } `}
             disabled={origin.skyId && destination.skyId ? false : true}
             onClick={() => {
               setOrigin({ ...destination });
               setDestination({ ...origin });
+              setRotated(!rotated);
             }}
           >
-            <FaExchangeAlt />
+            <FaExchangeAlt
+              className={`transform transition-transform duration-300 ${
+                rotated ? "rotate-180" : ""
+              }`}
+            />
           </button>
           <div className="ml-[-12px]">
             <CityAutocompleteTextInput
@@ -189,14 +199,34 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
             />
           </div>
         </div>
-
-        <Date date={departureDate} setDate={setDepartureDate} />
+        <CustomDateInput
+          date={departureDate}
+          setDate={setDepartureDate}
+          placeholder="Departure"
+          minDate={new Date().toISOString().split("T")[0]}
+        />{" "}
+        {tripType === TripType.RoundTrip && (
+          <CustomDateInput
+            date={returnDate}
+            setDate={setReturnDate}
+            placeholder="Return"
+            minDate={departureDate || new Date().toISOString().split("T")[0]}
+            disabled={!departureDate}
+          />
+        )}
+        {/* <Date date={departureDate} setDate={setDepartureDate} />
         {tripType === TripType.RoundTrip && (
           <Date date={returnDate} setDate={setReturnDate} />
-        )}
+        )} */}
       </div>
 
-      <button type="submit">Search</button>
+      <button
+        type="submit"
+        className="flex items-center gap-2 w-fit px-4 py-2 bg-[#1a73e8] text-white self-center rounded-[24px]"
+      >
+        <MdSearch size={20} />
+        <p>Search</p>
+      </button>
     </form>
   );
 }
