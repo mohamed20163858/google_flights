@@ -92,7 +92,7 @@ function CityAutocompleteTextInput({
   }, [inputValue]);
   return (
     <div ref={containerRef} className="relative max-w-[282px] max-h-[56px]">
-      <div className=" px-4 py-2 border hover:border-black rounded min-w-[200px] w-full flex gap-2 items-center">
+      <div className=" px-4 py-2 border border-gray-400 hover:border-black dark:hover:border-white  rounded min-w-[200px] w-full flex gap-2 items-center">
         {placeholder === "Where from ?" && <MdOutlineTripOrigin />}
         {placeholder === "Where to ?" && <MdOutlineLocationOn size={20} />}
         <div className="flex items-center">
@@ -107,7 +107,7 @@ function CityAutocompleteTextInput({
             value={inputValue}
             onChange={handleInputChange}
             style={{ width }}
-            className="outline-none text-black"
+            className="outline-none text-black dark:text-white dark:bg-inherit"
             required
           />
           <p className="text-[12px] mb-[-5px]">{suggestion.skyId}</p>
@@ -115,7 +115,7 @@ function CityAutocompleteTextInput({
       </div>
 
       {suggestions.length > 0 && inputValue && (
-        <ul className="absolute left-0 right-0 top-full bg-white text-[black] z-50 shadow-lg max-h-60 overflow-y-auto">
+        <ul className="absolute left-0 right-0 top-full bg-white dark:bg-[#394457] text-black dark:text-white z-50 shadow-lg max-h-60 overflow-y-auto">
           {suggestions.map((item) => (
             <li
               key={uuidv4()}

@@ -35,11 +35,11 @@ export default function FlightClassSelector({
   };
 
   return (
-    <div className="relative text-black">
+    <div className="relative text-black dark:text-white">
       {/* Dropdown Button */}
       <button
         type="button"
-        className="w-full flex gap-2 items-center outline-none px-4 py-2 hover:bg-[#f1f3f4] border-[#1a73e8] focus:border-b focus:bg-[#d2e3fc] whitespace-nowrap"
+        className="w-full flex gap-2 items-center outline-none px-4 py-2 hover:bg-[#f1f3f4] dark:hover:bg-[#1c1c1c]  border-[#1a73e8] focus:border-b focus:bg-[#d2e3fc] dark:focus:bg-[#85b1f4] whitespace-nowrap"
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="flex gap-2 items-center">
@@ -52,17 +52,19 @@ export default function FlightClassSelector({
 
       {/* Dropdown Options */}
       {isOpen && (
-        <ul className="absolute left-0 mt-2 w-auto min-w-full bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden z-10">
+        <ul className="absolute left-0 mt-2 w-auto min-w-full bg-white dark:bg-[#394457] text-black dark:text-white border border-gray-200 rounded-md shadow-lg overflow-hidden z-10">
           {Object.values(FlightClass).map((flightClass) => (
             <li
               key={flightClass}
               onClick={() => handleSelect(flightClass)}
               className={`flex justify-between items-center px-2 py-2 cursor-pointer whitespace-nowrap ${
-                flightClass === selectedClass ? "bg-[#d2e3fc]" : ""
+                flightClass === selectedClass
+                  ? "bg-[#d2e3fc] dark:bg-slate-400"
+                  : ""
               }`}
             >
               <span className="w-5 h-5 flex justify-center items-center">
-                {flightClass === selectedClass && <MdOutlineCheck />}
+                {flightClass === selectedClass && <MdOutlineCheck size={20} />}
               </span>
               <span>{flightClassLabels[flightClass]}</span>
             </li>

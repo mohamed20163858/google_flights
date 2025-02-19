@@ -1,3 +1,4 @@
+import { ThemeProvider } from "next-themes";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
@@ -21,8 +22,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} antialiased text-[#70757a]`}>
-        {children}
+      <body
+        className={`${roboto.variable} antialiased text-[#70757a] dark:bg-gray-900 dark:text-white`}
+      >
+        <ThemeProvider attribute="class">{children}</ThemeProvider>
       </body>
     </html>
   );

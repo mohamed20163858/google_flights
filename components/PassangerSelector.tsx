@@ -54,14 +54,14 @@ export default function PassengerSelector({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex gap-2 items-center outline-none px-4 py-2  hover:bg-[#f1f3f4]  border-[#1a73e8] focus:border-b focus:bg-[#d2e3fc] whitespace-nowrap"
+        className="w-full flex gap-2 items-center outline-none px-4 py-2  hover:bg-[#f1f3f4] dark:hover:bg-[#1c1c1c]  border-[#1a73e8] focus:border-b focus:bg-[#d2e3fc] dark:focus:bg-[#85b1f4] whitespace-nowrap"
       >
         <div className="flex gap-2 items-center">
           <div className="text-gray-500">
             <MdOutlinePersonOutline size={24} />
           </div>
 
-          <div className="text-black">{totalPassengers}</div>
+          <div className="text-black dark:text-white">{totalPassengers}</div>
         </div>
 
         {!isOpen && <FaCaretDown className="ml-2 text-gray-500" />}
@@ -70,7 +70,7 @@ export default function PassengerSelector({
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-auto min-w-full bg-white shadow-lg border rounded-md p-4">
+        <div className="absolute left-0 mt-2 w-auto min-w-full bg-white dark:bg-[#394457] shadow-lg border rounded-md p-4">
           {(["adults", "children", "infants"] as const).map((type) => (
             <div
               key={uuidv4()}

@@ -29,7 +29,7 @@ function MinimizedListItemResult({
         )
       : 0;
   return (
-    <li className="flex gap-2 justify-between items-center max-w-[736px] w-full p-4 border text-black border-[#dadce0] rounded-lg ">
+    <li className="flex gap-2 justify-between items-center max-w-[736px] w-full p-4 border text-black dark:text-white border-[#dadce0] rounded-lg ">
       <div className="flex items-center gap-[30px]">
         <div>
           <Image

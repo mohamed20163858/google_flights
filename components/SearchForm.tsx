@@ -254,7 +254,9 @@ function SearchForm({
 
   return (
     <form
-      className={`flex flex-col  gap-4 my-[40px] ${
+      className={`flex flex-col  gap-4 my-[40px] bg-white ${
+        isSubmitted ? "dark:bg-inherit" : "dark:bg-[#3c4043]"
+      }  ${
         !isSubmitted &&
         "mx-[16px] pt-[8px] pb-[48px] px-[16px] rounded-[8px] shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)]"
       }`}
@@ -280,7 +282,9 @@ function SearchForm({
           />
           <button
             type="button"
-            className={`relative z-10 flex justify-center items-center w-[30px] h-[30px] border borde-[#dadce0] rounded-[30px] ml-[-12px] bg-white  ${
+            className={`relative z-10 flex justify-center items-center w-[30px] h-[30px] border border-[#dadce0] rounded-[30px] ml-[-12px] bg-white ${
+              isSubmitted ? "dark:bg-black" : "dark:bg-[#394457]"
+            }  ${
               origin.skyId && destination.skyId
                 ? "hover:bg-[#f1f3f4] "
                 : "text-[#dadce0]"

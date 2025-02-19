@@ -22,7 +22,7 @@ function MaximizedListItemResult({
   const departureDate = formatDate(flightInfo.departure.split("T")[0]);
   return (
     <li className="flex flex-col w-full items-center">
-      <div className="flex gap-2 justify-between items-center max-w-[736px] text-black  w-full p-4 border border-[#dadce0] rounded-t-lg">
+      <div className="flex gap-2 justify-between items-center max-w-[736px] text-black dark:text-white  w-full p-4 border border-[#dadce0] rounded-t-lg">
         <div className="flex gap-[40px] items-center">
           <Image
             src={
@@ -101,7 +101,7 @@ function MaximizedListItemResult({
               <div className="flex flex-col grow">
                 <div className="flex gap-5 justify-between ">
                   <div>
-                    <p className="text-black text-[14px]">
+                    <p className="text-black dark:text-white text-[14px]">
                       {" "}
                       {departureTime[0]}:{departureTime[1]} {departureDay} .{" "}
                       {segment.origin.name} {segment.origin.type} (
@@ -111,7 +111,7 @@ function MaximizedListItemResult({
                       Travel time: {Math.floor(segment.durationInMinutes / 60)}{" "}
                       hr {segment.durationInMinutes % 60} min
                     </p>
-                    <p className="max-w-[267px] text-black text-[14px]">
+                    <p className="max-w-[267px] text-black dark:text-white text-[14px]">
                       {arrivalTime[0]}:{arrivalTime[1]} {arrivalDay}.{" "}
                       {segment.destination.name} {segment.destination.type} (
                       {segment.destination.flightPlaceId})
