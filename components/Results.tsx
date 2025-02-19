@@ -1,5 +1,6 @@
 import { FlightInfo } from "@/types/flight";
 import ListItemResult from "./ListItemResult";
+import { v4 as uuidv4 } from "uuid";
 
 function Results({ flightInfos }: { flightInfos: FlightInfo[] }) {
   return (
@@ -9,7 +10,7 @@ function Results({ flightInfos }: { flightInfos: FlightInfo[] }) {
           flightInfos.map((flightInfo) => {
             return (
               <div
-                key={flightInfo.id}
+                key={uuidv4()}
                 className="w-full flex flex-col justify-center items-center"
               >
                 <ListItemResult flightInfo={flightInfo} />

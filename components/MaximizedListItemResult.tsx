@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { getTimeDifferenceInMinutes } from "@/utils/timeHelper";
+import { v4 as uuidv4 } from "uuid";
+
 import { SlArrowUp } from "react-icons/sl";
 import { FlightInfo } from "@/types/flight";
 import { formatDate } from "@/utils/timeHelper";
@@ -74,7 +76,7 @@ function MaximizedListItemResult({
                 )
               : 0;
           return (
-            <div key={segment.flightNumber} className="flex mt-4 pl-4 gap-4">
+            <div key={uuidv4()} className="flex mt-4 pl-4 gap-4">
               <div className="flex justify-between items-center gap-[40px] h-[76px]">
                 <div className="w-[40px] h-[40px]">
                   {flightInfo.logosURL.length > 1 && (

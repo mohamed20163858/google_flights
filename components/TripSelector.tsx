@@ -1,8 +1,12 @@
-import { useState } from "react";
-
-function SimpleDropDownMenu() {
-  const [tripType, setTripType] = useState("Round trip");
-
+enum TripType {
+  RoundTrip = "Round trip",
+  OneWay = "One way",
+}
+interface TripSelectorProps {
+  tripType: TripType;
+  setTripType: (tripType: TripType) => void;
+}
+function TripSelector({ tripType, setTripType }: TripSelectorProps) {
   interface HandleChangeEvent {
     target: {
       value: string;
@@ -10,7 +14,7 @@ function SimpleDropDownMenu() {
   }
 
   const handleChange = (event: HandleChangeEvent) => {
-    setTripType(event.target.value);
+    setTripType(event.target.value as TripType);
   };
 
   return (
@@ -26,4 +30,4 @@ function SimpleDropDownMenu() {
   );
 }
 
-export default SimpleDropDownMenu;
+export default TripSelector;

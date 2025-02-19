@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+
 import { CityAutoCompleteTextInputProps, Flight } from "@/types/flight";
 import { MdOutlineTripOrigin } from "react-icons/md";
 import { MdOutlineLocationOn } from "react-icons/md";
@@ -85,7 +87,7 @@ function CityAutocompleteTextInput({
         <ul className="absolute left-0 right-0 top-full bg-white z-50 shadow-lg max-h-60 overflow-y-auto">
           {suggestions.map((item) => (
             <li
-              key={item.entityId}
+              key={uuidv4()}
               onClick={() => handleSuggestionClick(item)}
               className="p-2 hover:bg-gray-200 cursor-pointer"
             >

@@ -4,8 +4,24 @@ import CityAutocompleteTextInput from "./CityAutocompleteTextInput";
 import { FaExchangeAlt } from "react-icons/fa";
 import { SearchFormProps, FlightInfo, Flight } from "@/types/flight";
 import Date from "./Date";
-import SimpleDropDownMenu from "./SimpleDropDownMenu";
-
+import SimpleDropDownMenu from "./TripSelector";
+import FlightClassSelector from "./FlightClassSelector";
+import PassengerSelector from "./PassangerSelector";
+enum TripType {
+  RoundTrip = "Round trip",
+  OneWay = "One way",
+}
+enum FlightClass {
+  Economy = "economy",
+  PremiumEconomy = "premium_economy",
+  Business = "business",
+  First = "first",
+}
+interface PassengerCounts {
+  adults: number;
+  children: number;
+  infants: number;
+}
 function SearchForm({ setFlightInfos }: SearchFormProps) {
   const [origin, setOrigin] = useState<Flight>({
     entityId: "",
@@ -23,7 +39,15 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
   });
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
-
+  const [tripType, setTripType] = useState<TripType>(TripType.RoundTrip);
+  const [selectedClass, setSelectedClass] = useState<FlightClass>(
+    FlightClass.Economy
+  );
+  const [passengers, setPassengers] = useState<PassengerCounts>({
+    adults: 1,
+    children: 0,
+    infants: 0,
+  });
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function (position) {
@@ -59,7 +83,17 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
     e.preventDefault();
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/v2/flights/searchFlights?originSkyId=${origin.skyId}&destinationSkyId=${destination.skyId}&originEntityId=${origin.entityId}&destinationEntityId=${destination.entityId}&date=${departureDate}`,
+      `${
+        process.env.NEXT_PUBLIC_BACKEND_URL
+      }/v2/flights/searchFlights?originSkyId=${origin.skyId}&destinationSkyId=${
+        destination.skyId
+      }&originEntityId=${origin.entityId}&destinationEntityId=${
+        destination.entityId
+      }&date=${departureDate}&cabinClass=${selectedClass}&adults=${
+        passengers.adults
+      }&childrens=${passengers.children}&infants=${passengers.infants}${
+        tripType === TripType.RoundTrip && `&returnDate=${returnDate}`
+      }`,
       {
         method: "GET",
         headers: {
@@ -116,7 +150,15 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
   return (
     <form className="flex flex-col  gap-4" onSubmit={handleSubmit}>
       <div className="flex items-center gap-4">
-        <SimpleDropDownMenu />
+        <SimpleDropDownMenu tripType={tripType} setTripType={setTripType} />
+        <PassengerSelector
+          passengers={passengers}
+          setPassengers={setPassengers}
+        />
+        <FlightClassSelector
+          selectedClass={selectedClass}
+          setSelectedClass={setSelectedClass}
+        />
       </div>
       <div className="flex justify-center items-center gap-4">
         <div className="flex items-center">
@@ -149,7 +191,9 @@ function SearchForm({ setFlightInfos }: SearchFormProps) {
         </div>
 
         <Date date={departureDate} setDate={setDepartureDate} />
-        <Date date={returnDate} setDate={setReturnDate} />
+        {tripType === TripType.RoundTrip && (
+          <Date date={returnDate} setDate={setReturnDate} />
+        )}
       </div>
 
       <button type="submit">Search</button>
