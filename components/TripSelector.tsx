@@ -38,7 +38,7 @@ function TripSelector({ tripType, setTripType }: TripSelectorProps) {
             {tripType === TripType.OneWay && <FaArrowRightLong />}
           </div>
 
-          <div>{tripType}</div>
+          <div className="text-black">{tripType}</div>
         </div>
 
         {!isOpen && <FaCaretDown className="ml-2 text-gray-500" />}
@@ -57,9 +57,9 @@ function TripSelector({ tripType, setTripType }: TripSelectorProps) {
               }`}
             >
               <span className="w-5 h-5 flex justify-center items-center">
-                {type === tripType && <MdOutlineCheck />}
+                {type === tripType && <MdOutlineCheck size={20} />}
               </span>
-              <span>{type}</span>
+              <span className="text-black">{type}</span>
             </li>
           ))}
         </ul>

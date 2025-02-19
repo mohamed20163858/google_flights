@@ -18,12 +18,13 @@ function CityAutocompleteTextInput({
   );
   const [suggestions, setSuggestions] = useState<Flight[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const spanRef = useRef<HTMLSpanElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [width, setWidth] = useState("auto");
 
   useEffect(() => {
     if (suggestion.entityId) {
-      setInputValue(
-        `${suggestion.localizedName.split(" ")[0]} ${suggestion.skyId}`
-      );
+      setInputValue(`${suggestion.localizedName.split(" ")[0]}`);
     }
   }, [suggestion]);
 
@@ -82,25 +83,38 @@ function CityAutocompleteTextInput({
     setSuggestion({ ...suggestion });
     setSuggestions([]); // hide suggestions after selection
   };
-
+  useEffect(() => {
+    if (spanRef.current && inputValue) {
+      setWidth(`${spanRef.current.offsetWidth + 5}px`); // +5 for slight padding
+    } else {
+      setWidth("auto");
+    }
+  }, [inputValue]);
   return (
     <div ref={containerRef} className="relative max-w-[282px] max-h-[56px]">
-      <div className=" px-4 py-2 border hover:border-black rounded w-full flex gap-2 items-center">
+      <div className=" px-4 py-2 border hover:border-black rounded min-w-[200px] w-full flex gap-2 items-center">
         {placeholder === "Where from ?" && <MdOutlineTripOrigin />}
         {placeholder === "Where to ?" && <MdOutlineLocationOn size={20} />}
-
-        <input
-          type="text"
-          name="city"
-          placeholder={placeholder}
-          value={inputValue}
-          onChange={handleInputChange}
-          className="outline-none "
-        />
+        <div className="flex items-center">
+          <span ref={spanRef} className="absolute invisible whitespace-nowrap">
+            {inputValue || " "}
+          </span>
+          <input
+            ref={inputRef}
+            type="text"
+            name="city"
+            placeholder={placeholder}
+            value={inputValue}
+            onChange={handleInputChange}
+            style={{ width }}
+            className="outline-none text-black"
+          />
+          <p className="text-[12px] mb-[-5px]">{suggestion.skyId}</p>
+        </div>
       </div>
 
       {suggestions.length > 0 && inputValue && (
-        <ul className="absolute left-0 right-0 top-full bg-white z-50 shadow-lg max-h-60 overflow-y-auto">
+        <ul className="absolute left-0 right-0 top-full bg-white text-[black] z-50 shadow-lg max-h-60 overflow-y-auto">
           {suggestions.map((item) => (
             <li
               key={uuidv4()}

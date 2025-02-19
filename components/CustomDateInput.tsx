@@ -139,13 +139,17 @@ export default function CustomDateInput({
       {/* Display area with left/right arrows */}
       <div
         onClick={() => !disabled && setIsOpen(!isOpen)}
-        className={`flex items-center border rounded-md p-2 bg-white shadow-sm w-44 cursor-pointer ${
+        className={`flex items-center border hover:border-black rounded-md p-2 bg-white shadow-sm w-44 cursor-pointer ${
           disabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
       >
         <div className="flex flex-grow items-center gap-2">
           {placeholder === "Departure" && <MdDateRange size={20} />}
-          <div className=" text-center select-none whitespace-nowrap mr-2">
+          <div
+            className={` text-center ${
+              date ? "text-[black]" : ""
+            } select-none whitespace-nowrap mr-2`}
+          >
             {date ? formatDate(date) : placeholder}
           </div>
         </div>

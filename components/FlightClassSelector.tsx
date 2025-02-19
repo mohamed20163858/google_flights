@@ -35,7 +35,7 @@ export default function FlightClassSelector({
   };
 
   return (
-    <div className="relative">
+    <div className="relative text-black">
       {/* Dropdown Button */}
       <button
         type="button"

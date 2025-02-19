@@ -61,7 +61,7 @@ export default function PassengerSelector({
             <MdOutlinePersonOutline size={24} />
           </div>
 
-          <div>{totalPassengers}</div>
+          <div className="text-black">{totalPassengers}</div>
         </div>
 
         {!isOpen && <FaCaretDown className="ml-2 text-gray-500" />}
