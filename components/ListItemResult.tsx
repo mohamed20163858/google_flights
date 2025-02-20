@@ -3,6 +3,7 @@ import MinimizedListItemResult from "./MinimizedListItemResult";
 import MaximizedListItemResult from "./MaximizedListItemResult";
 import { FlightInfo } from "@/types/flight";
 import MinimizedListItemResultMobile from "./MinimizedListItemResultMobile";
+import MaximizedListItemResultMobile from "./MaximizedListItemResultMobile";
 
 function ListItemResult({ flightInfo }: { flightInfo: FlightInfo }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -43,6 +44,13 @@ function ListItemResult({ flightInfo }: { flightInfo: FlightInfo }) {
       >
         <div className="hidden sm:block">
           <MaximizedListItemResult
+            flightInfo={flightInfo}
+            isExpanded={isExpanded}
+            setIsExpanded={setIsExpanded}
+          />
+        </div>
+        <div className="sm:hidden">
+          <MaximizedListItemResultMobile
             flightInfo={flightInfo}
             isExpanded={isExpanded}
             setIsExpanded={setIsExpanded}
