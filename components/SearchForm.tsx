@@ -258,11 +258,11 @@ function SearchForm({
         isSubmitted ? "dark:bg-inherit" : "dark:bg-[#3c4043]"
       }  ${
         !isSubmitted &&
-        "mx-[16px] pt-[8px] pb-[48px] px-[16px] rounded-[8px] shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)]"
+        "mx-[16px] pt-[8px] pb-[48px] px-[16px] rounded-[8px] sm:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)]"
       }`}
       onSubmit={handleSubmit}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center sm:gap-4">
         <SimpleDropDownMenu tripType={tripType} setTripType={setTripType} />
         <PassengerSelector
           passengers={passengers}
@@ -273,8 +273,8 @@ function SearchForm({
           setSelectedClass={setSelectedClass}
         />
       </div>
-      <div className="flex justify-center items-center gap-4">
-        <div className="flex items-center">
+      <div className="sm:flex justify-center items-center gap-4">
+        <div className="flex items-center justify-center">
           <CityAutocompleteTextInput
             placeholder="Where from ?"
             suggestion={origin}
@@ -310,25 +310,23 @@ function SearchForm({
             />
           </div>
         </div>
-        <CustomDateInput
-          date={departureDate}
-          setDate={setDepartureDate}
-          placeholder="Departure"
-          minDate={new Date().toISOString().split("T")[0]}
-        />{" "}
-        {tripType === TripType.RoundTrip && (
+        <div className="flex justify-center gap-1 mt-4 sm:mt-0 ">
           <CustomDateInput
-            date={returnDate}
-            setDate={setReturnDate}
-            placeholder="Return"
-            minDate={departureDate || new Date().toISOString().split("T")[0]}
-            disabled={!departureDate}
-          />
-        )}
-        {/* <Date date={departureDate} setDate={setDepartureDate} />
-        {tripType === TripType.RoundTrip && (
-          <Date date={returnDate} setDate={setReturnDate} />
-        )} */}
+            date={departureDate}
+            setDate={setDepartureDate}
+            placeholder="Departure"
+            minDate={new Date().toISOString().split("T")[0]}
+          />{" "}
+          {tripType === TripType.RoundTrip && (
+            <CustomDateInput
+              date={returnDate}
+              setDate={setReturnDate}
+              placeholder="Return"
+              minDate={departureDate || new Date().toISOString().split("T")[0]}
+              disabled={!departureDate}
+            />
+          )}
+        </div>
       </div>
       {!isSubmitted && (
         <button

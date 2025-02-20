@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.variable} antialiased text-[#70757a] dark:bg-gray-900 dark:text-white`}
+        className={`${roboto.variable} antialiased text-[10px] leading-[14px] sm:text-[14px] sm:leading-[20px] text-[#70757a] dark:bg-gray-900 dark:text-white`}
       >
         <ThemeProvider attribute="class">
           <Navbar />

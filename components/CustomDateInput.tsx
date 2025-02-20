@@ -139,12 +139,15 @@ export default function CustomDateInput({
       {/* Display area with left/right arrows */}
       <div
         onClick={() => !disabled && setIsOpen(!isOpen)}
-        className={`flex items-center border hover:border-black rounded-md p-2 bg-white dark:bg-inherit shadow-sm w-44 cursor-pointer ${
+        className={`flex items-center border hover:border-black rounded-md p-2 bg-white dark:bg-inherit shadow-sm sm:w-44 cursor-pointer ${
           disabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
       >
         <div className="flex flex-grow items-center gap-2">
           {placeholder === "Departure" && <MdDateRange size={20} />}
+          {placeholder !== "Departure" && (
+            <div className="w-[20px] h-[20px]"></div>
+          )}
           <div
             className={` text-center ${
               date ? "text-black dark:text-white" : ""
@@ -184,7 +187,7 @@ export default function CustomDateInput({
 
       {/* Calendar Popup */}
       {isOpen && (
-        <div className="absolute bottom-0 z-30 mt-2 bg-white dark:bg-[#394457]  border rounded-md p-4 w-72">
+        <div className="hidden sm:block absolute bottom-[-100px] left-[-50%] z-30 mt-2 bg-white dark:bg-[#394457]  border rounded-md p-4 sm:w-72">
           {/* Calendar Header */}
           <div className="flex justify-between items-center mb-2">
             <button
