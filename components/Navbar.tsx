@@ -1,6 +1,8 @@
 "use client";
-
-import DarkModeToggle from "./DarkModeToggle";
+import dynamic from "next/dynamic";
+const DarkModeToggle = dynamic(() => import("./DarkModeToggle"), {
+  ssr: false,
+});
 
 export default function Navbar() {
   return (

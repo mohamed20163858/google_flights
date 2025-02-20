@@ -1,3 +1,5 @@
+"use client";
+
 import { FlightInfo } from "@/types/flight";
 import ListItemResult from "./ListItemResult";
 import { v4 as uuidv4 } from "uuid";

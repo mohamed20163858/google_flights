@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { getTimeDifferenceInMinutes } from "@/utils/timeHelper";
 import { SlArrowDown } from "react-icons/sl";

@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { getTimeDifferenceInMinutes } from "@/utils/timeHelper";
 import { v4 as uuidv4 } from "uuid";

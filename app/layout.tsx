@@ -1,5 +1,4 @@
 import { ThemeProvider } from "next-themes";
-import Navbar from "@/components/Navbar";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
@@ -22,13 +21,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${roboto.variable} antialiased text-[10px] leading-[14px] sm:text-[14px] sm:leading-[20px] text-[#70757a] dark:bg-gray-900 dark:text-white`}
       >
-        <ThemeProvider attribute="class">
-          <Navbar />
-          <main>{children}</main>
+        <ThemeProvider attribute="class" defaultTheme="light">
+          {children}
         </ThemeProvider>
       </body>
     </html>

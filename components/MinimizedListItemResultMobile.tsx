@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { SlArrowDown } from "react-icons/sl";
 import { FlightInfo } from "@/types/flight";

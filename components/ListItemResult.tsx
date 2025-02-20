@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+"use client";
+import { useState } from "react";
 import MinimizedListItemResult from "./MinimizedListItemResult";
 import MaximizedListItemResult from "./MaximizedListItemResult";
 import { FlightInfo } from "@/types/flight";
