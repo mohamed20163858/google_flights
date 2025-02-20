@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { MdDateRange } from "react-icons/md";
+import { MdDateRange, MdClose } from "react-icons/md";
 import { formatDate } from "@/utils/timeHelper";
 
 interface CustomDateInputProps {
@@ -28,6 +28,17 @@ export default function CustomDateInput({
     new Date().getMonth()
   );
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Determine if the device is mobile (<640px)
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Close calendar if clicking outside the component
   useEffect(() => {
@@ -149,7 +160,7 @@ export default function CustomDateInput({
             <div className="w-[20px] h-[20px]"></div>
           )}
           <div
-            className={` text-center ${
+            className={`text-center ${
               date ? "text-black dark:text-white" : ""
             } select-none whitespace-nowrap mr-2`}
           >
@@ -186,86 +197,178 @@ export default function CustomDateInput({
       </div>
 
       {/* Calendar Popup */}
-      {isOpen && (
-        <div className="hidden sm:block absolute bottom-[-100px] left-[-50%] z-30 mt-2 bg-white dark:bg-[#394457]  border rounded-md p-4 sm:w-72">
-          {/* Calendar Header */}
-          <div className="flex justify-between items-center mb-2">
-            <button
-              type="button"
-              onClick={prevMonth}
-              className="text-gray-500 dark:text-white hover:text-gray-700"
-            >
-              <FaChevronLeft size={14} />
-            </button>
-            <div className="text-sm font-semibold">
-              {monthNames[calendarMonth]} {calendarYear}
+      {isOpen &&
+        (isMobile ? (
+          // Mobile Full-Screen Modal
+          <div className="fixed sm:hidden inset-0 z-50 bg-white dark:bg-[#394457] p-4 overflow-y-auto">
+            {/* Close Button */}
+            <div className="flex justify-end mb-2">
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="text-gray-500 dark:text-white"
+              >
+                <MdClose size={16} />
+              </button>
             </div>
-            <button
-              type="button"
-              onClick={nextMonth}
-              className="text-gray-500 hover:text-gray-700 dark:text-white"
-            >
-              <FaChevronRight size={14} />
-            </button>
-          </div>
+            {/* Mobile Calendar Header with previous and next month buttons */}
+            <div className="flex justify-between items-center mb-2">
+              <button
+                type="button"
+                onClick={prevMonth}
+                className="text-gray-500 dark:text-white"
+              >
+                <FaChevronLeft size={14} />
+              </button>
+              <div className="text-sm font-semibold text-gray-700 dark:text-white">
+                {monthNames[calendarMonth]} {calendarYear}
+              </div>
+              <button
+                type="button"
+                onClick={nextMonth}
+                className="text-gray-500 dark:text-white"
+              >
+                <FaChevronRight size={14} />
+              </button>
+            </div>
 
-          {/* Day Names */}
-          <div className="grid grid-cols-7 gap-1 mb-1 text-xs text-center font-semibold text-gray-600 dark:text-white">
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-              <div key={d}>{d}</div>
-            ))}
-          </div>
+            {/* Day Names */}
+            <div className="grid grid-cols-7 gap-1 mb-1 text-xs text-center font-semibold text-gray-600 dark:text-white">
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
+                <div key={d}>{d}</div>
+              ))}
+            </div>
 
-          {/* Calendar Days */}
-          <div className="grid grid-cols-7 gap-1">
-            {getCalendarDays(calendarYear, calendarMonth).map((day, idx) => {
-              if (!day) return <div key={idx} />;
-              const dayDate = new Date(calendarYear, calendarMonth, day);
-              const isSelected =
-                date &&
-                new Date(date).toDateString() === dayDate.toDateString();
-              let isDisabled = false;
-              if (minDate) {
-                const min = new Date(minDate);
-                if (dayDate < min) isDisabled = true;
-              }
-              return (
-                <button
-                  type="button"
-                  key={idx}
-                  onClick={() => handleDayClick(day)}
-                  disabled={isDisabled}
-                  className={`p-1 text-center rounded-md text-sm ${
-                    isSelected
-                      ? "bg-blue-500 text-white"
-                      : "hover:bg-gray-200 text-gray-700 dark:text-white"
-                  } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
-                >
-                  {day}
-                </button>
-              );
-            })}
-          </div>
+            {/* Calendar Days */}
+            <div className="grid grid-cols-7 gap-1">
+              {getCalendarDays(calendarYear, calendarMonth).map((day, idx) => {
+                if (!day) return <div key={idx} />;
+                const dayDate = new Date(calendarYear, calendarMonth, day);
+                const isSelected =
+                  date &&
+                  new Date(date).toDateString() === dayDate.toDateString();
+                let isDisabled = false;
+                if (minDate) {
+                  const min = new Date(minDate);
+                  if (dayDate < min) isDisabled = true;
+                }
+                return (
+                  <button
+                    type="button"
+                    key={idx}
+                    onClick={() => handleDayClick(day)}
+                    disabled={isDisabled}
+                    className={`p-1 text-center rounded-md text-sm ${
+                      isSelected
+                        ? "bg-blue-500 text-white"
+                        : "hover:bg-gray-200 text-gray-700 dark:text-white"
+                    } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
+                    {day}
+                  </button>
+                );
+              })}
+            </div>
 
-          {/* Reset and Done Buttons */}
-          <div className="flex justify-between mt-3">
-            <button
-              type="button"
-              onClick={resetDate}
-              className="px-3 py-1 bg-gray-300 text-gray-700 dark:text-white rounded-md text-sm hover:bg-gray-400"
-            >
-              Reset
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600"
-            >
-              Done
-            </button>
+            {/* Reset and Done Buttons */}
+            <div className="flex justify-between mt-3">
+              <button
+                type="button"
+                onClick={resetDate}
+                className="px-3 py-1 bg-gray-300 text-gray-700 dark:text-white rounded-md text-sm hover:bg-gray-400"
+              >
+                Reset
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600"
+              >
+                Done
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        ) : (
+          // Desktop Calendar Popup
+          <div className="hidden sm:block absolute bottom-[-100px] left-[-50%] z-30 mt-2 bg-white dark:bg-[#394457] border rounded-md p-4 sm:w-72">
+            {/* Calendar Header */}
+            <div className="flex justify-between items-center mb-2">
+              <button
+                type="button"
+                onClick={prevMonth}
+                className="text-gray-500 dark:text-white hover:text-gray-700"
+              >
+                <FaChevronLeft size={14} />
+              </button>
+              <div className="text-sm font-semibold">
+                {monthNames[calendarMonth]} {calendarYear}
+              </div>
+              <button
+                type="button"
+                onClick={nextMonth}
+                className="text-gray-500 hover:text-gray-700 dark:text-white"
+              >
+                <FaChevronRight size={14} />
+              </button>
+            </div>
+
+            {/* Day Names */}
+            <div className="grid grid-cols-7 gap-1 mb-1 text-xs text-center font-semibold text-gray-600 dark:text-white">
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
+                <div key={d}>{d}</div>
+              ))}
+            </div>
+
+            {/* Calendar Days */}
+            <div className="grid grid-cols-7 gap-1">
+              {getCalendarDays(calendarYear, calendarMonth).map((day, idx) => {
+                if (!day) return <div key={idx} />;
+                const dayDate = new Date(calendarYear, calendarMonth, day);
+                const isSelected =
+                  date &&
+                  new Date(date).toDateString() === dayDate.toDateString();
+                let isDisabled = false;
+                if (minDate) {
+                  const min = new Date(minDate);
+                  if (dayDate < min) isDisabled = true;
+                }
+                return (
+                  <button
+                    type="button"
+                    key={idx}
+                    onClick={() => handleDayClick(day)}
+                    disabled={isDisabled}
+                    className={`p-1 text-center rounded-md text-sm ${
+                      isSelected
+                        ? "bg-blue-500 text-white"
+                        : "hover:bg-gray-200 text-gray-700 dark:text-white"
+                    } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+                  >
+                    {day}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Reset and Done Buttons */}
+            <div className="flex justify-between mt-3">
+              <button
+                type="button"
+                onClick={resetDate}
+                className="px-3 py-1 bg-gray-300 text-gray-700 dark:text-white rounded-md text-sm hover:bg-gray-400"
+              >
+                Reset
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        ))}
     </div>
   );
 }
