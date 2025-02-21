@@ -6,6 +6,10 @@ A Next.js-based clone of Google Flights that allows users to search for flights 
 - Autocomplete for airport search using the **searchAirport** endpoint.
 - Detailed flight search via the **searchFlights** endpoint.
 
+## Important Update 
+- due to the down of this endpoint [searchAirport](https://rapidapi.com/apiheya/api/sky-scrapper/playground/apiendpoint_efcce954-2563-41cb-97fc-b2abe7851b3d). ![image](https://github.com/user-attachments/assets/d03f0ceb-c9c4-4130-b1b2-58234ecc6b7c)
+I decided to use another API for the autocomplete functionality which is [Flights Scrapper](https://rapidapi.com/ntd119/api/sky-scanner3/playground/apiendpoint_8eff744f-bd64-4923-9eed-6a937ab65628) auto-complete endpoint. to make the application work again. thanks for your understanding!
+
 ## API Integration
 
 This project uses the [Sky Scrapper API](https://rapidapi.com/apiheya/api/sky-scrapper) from RapidAPI. The following endpoints are implemented:
