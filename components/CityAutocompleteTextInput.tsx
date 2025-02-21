@@ -53,9 +53,9 @@ function CityAutocompleteTextInput({
     }
 
     const response = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_BACKEND_URL
-      }/v1/flights/searchAirport?query=${encodeURIComponent(value)}`,
+      `https://sky-scanner3.p.rapidapi.com/flights/auto-complete?query=${encodeURIComponent(
+        value
+      )}`,
       {
         method: "GET",
         headers: {
